@@ -1,0 +1,5 @@
+{% for category in categories %}
+    <a href="{% url 'category_detail' category.slug %}" class="px-2 py-2 hover:bg-yellow-900 text-white">{{ category.title }}</a>
+{% endfor %}
+
+<a href="{% url 'about' %}" class="px-2 py-2 text-white hover:bg-yellow-900">About</a>
