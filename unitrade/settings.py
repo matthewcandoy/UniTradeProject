@@ -1,15 +1,18 @@
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Load .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y_2v*(wlez6hm^mtpd6qkb$r32wql*u_es^-70nm0iz^#&jljx'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 # Session and login settings
 CART_SESSION_ID = 'cart'
@@ -20,27 +23,19 @@ LOGOUT_REDIRECT_URL = 'frontpage'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'login'
 
 # Google OAuth settings for django-allauth
-
 SOCIALACCOUNT_AUTO_SIGNUP = True
-
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '863824603941-bbhravgud368moq1e2hnvavgb85cd5dq.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_CLIENT_SECRET'),
             'key': ''
         },
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
-        'REDIRECT_URI': 'http://127.0.0.1:8000/accounts/google/login/callback/',
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'REDIRECT_URI': os.getenv('WEBSITE_URL') + 'accounts/google/login/callback/',
     }
 }
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -73,17 +68,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'unitrade.urls'
 
-WEBSITE_URL = 'http://127.0.0.1:8000/'
+WEBSITE_URL = os.getenv('WEBSITE_URL')
 
-STRIPE_PUB_KEY = 'pk_test_51ROhnDFCwS1HirRLdip6IBPkiUPHxv3u6sUIzIdMCrMsq7QaqpQkwSORxn5i5YND0BEIkml2ViWa1N0z0FBUcw9400HNKwIVym'
-STRIPE_SECRET_KEY = 'sk_test_51ROhnDFCwS1HirRLHFdfiv0CTOqcmOMAmlUlDeCk3OxBpREaxeHyaofC5TNkXWOyyy7BivCEl2REtLQBckFnopfa004UsxHhwt'
+STRIPE_PUB_KEY = os.getenv('STRIPE_PUB_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'templates',
-        ],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,16 +111,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Site ID for django.contrib.sites
 SITE_ID = 1
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
