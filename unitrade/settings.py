@@ -37,7 +37,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         },
-        'REDIRECT_URI': 'http://127.0.0.1:8000/accounts/google/login/callback/',
+        'REDIRECT_URI': 'https://unitradeproject.onrender.com/accounts/google/login/callback/',
     }
 }
 
